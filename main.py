@@ -3,8 +3,13 @@ def main():
     text = get_text(book_path)
     num_words =count_words(text)
     chars_dict = get_chars_dict(text)
+    print("--- Begin report of books/frankenstein.txt ---")
     print(f"{num_words} words found in the document")
-    print(chars_dict)
+    print("\n")
+    final_list = convert_dict(chars_dict)
+    for item in final_list:
+        print(f"The '{item["char"]}' character was found {item["num"]} times")
+    print("--- End report ---")
 
 def get_text(path):
     with open(path) as f:
@@ -54,5 +59,22 @@ def get_chars_dict(text):
                     chars[char] += 1
 
     return chars
+
+# A function that takes a dictionary and returns the value of the "num" key
+def sort_on(d):
+     return d["num"]
+
+def convert_dict(dict):
+    new_list = []
+    for key in dict:
+        new_dict = {
+            "char": key,
+            "num": dict[key]
+        }
+        new_list.append(new_dict)
+    # gotta sort it before returning otherwise it doesn't evaluate -> a good question is why???
+    new_list.sort(reverse=True, key=sort_on)
+    return new_list
+
 
 main()
